@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WBTV - Building a World from Scratch</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #fcfbfa; /* Edles, helles Papier-Weiß */
+            --text-main: #1c1b1a; /* Sanftes Schwarz */
+            --text-muted: #6e6b64; /* Dezentes Grau für Struktur */
+            --accent: #8c2d19; /* Ein Hauch von Tinte/Wachs-Rot für subtile Akzente */
+            --font-serif: 'Cormorant Garamond', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            font-size: 16px;
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* Subtile Textur-Simulation des Papiers */
+            background-image: radial-gradient(rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(252, 251, 250, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            margin-left: 30px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--accent); }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: 3.5rem;
+            font-weight: 400;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            max-width: 600px;
+        }
+
+        /* Section Global */
+        section {
+            padding: 140px 10%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-weight: 400;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+
+        /* About & YouTube Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* YouTube Embed Container */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.02);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Links / Social Section */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .social-card {
+            border: 1px solid rgba(0,0,0,0.08);
+            padding: 40px;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text-main);
+            transition: all 0.4s ease;
+            background: #fff;
+        }
+
+        .social-card:hover {
+            border-color: var(--text-main);
+            transform: translateY(-5px);
+        }
+
+        .social-card i {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .social-card h3 {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        /* Footer & Legal */
+        footer {
+            background: #fff;
+            border-top: 1px solid rgba(0,0,0,0.05);
+            padding: 60px 10% 40px 10%;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .legal-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s;
+        }
+
+        .legal-links a:hover { color: var(--text-main); }
+
+        /* Legal Modal (Impressum / Datenschutz) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--bg-color);
+            padding: 50px;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        /* Responsive Anpassungen (Handy & TV) */
+        @media (max-width: 768px) {
+            nav { padding: 20px 5%; }
+            .nav-links { display: none; } /* Auf Handys minimal clean halten */
+            .hero h1 { font-size: 2.2rem; }
+            .grid-2 { grid-template-columns: 1fr; gap: 40px; }
+            section { padding: 80px 5%; }
+            .footer-content { flex-direction: column; text-align: center; }
+            .legal-links a { margin: 0 10px; }
+        }
+
+        @media (min-width: 2000px) { /* Für 4K Fernseher */
+            html { font-size: 22px; }
+            section { max-width: 1800px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">WBTV</div>
+        <div class="nav-links">
+            <a href="#about">Über Uns</a>
+            <a href="#videos">Videos</a>
+            <a href="#links">Links</a>
+        </div>
+    </nav>
+
+    <div class="hero">
+        <h1 data-aos="fade-up" data-aos-duration="1500">WBTV</h1>
+        <p data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">Building a World from Scratch</p>
+    </div>
+
+    <section id="about">
+        <div class="grid-2">
+            <div class="about-text" data-aos="fade-right" data-aos-duration="1000">
+                <h2>Das Projekt</h2>
+                <p>Willkommen auf unserem Kanal. Hier dreht sich alles um die Kunst des analogen Worldbuildings und des detailreichen Mapmakings.</p>
+                <p>Mit Tinte, Leder, Holz und Papier erwecken wir vergessene Kontinente, komplexe Ökosysteme und fesselnde Fantasy-Welten zum Leben. Schritt für Schritt, von der ersten Linie bis zur fertigen Legende.</p>
+            </div>
+            <div class="about-image" data-aos="fade-left" data-aos-duration="1000">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/DEINE_VIDEO_ID" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="links">
+        <h2 data-aos="fade-up" style="text-align: center;">Erkunde das Ökosystem</h2>
+        <div class="social-grid">
+            <a href="https://youtube.com/@DEIN_KANAL" target="_blank" class="social-card" data-aos="fade-up" data-aos-delay="100">
+                <i class="fab fa-youtube"></i>
+                <h3>YouTube Channel</h3>
+                <p>Abonniere für wöchentliche Deep Dives und Tutorials.</p>
+            </a>
+            <a href="#" target="_blank" class="social-card" data-aos="fade-up" data-aos-delay="200">
+                <i class="fab fa-discord"></i>
+                <h3>Discord Community</h3>
+                <p>Teile deine eigenen Karten und tausche dich aus.</p>
+            </a>
+            <a href="#" target="_blank" class="social-card" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-store"></i>
+                <h3>Worldbuilding Shop</h3>
+                <p>Exklusive Assets, Vorlagen und gedruckte Karten.</p>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div>© <script>document.write(new Date().getFullYear())</script> WBTV. Alle Rechte vorbehalten.</div>
+            <div class="legal-links">
+                <a href="#" onclick="openModal('impressum')">Impressum</a>
+                <a href="#" onclick="openModal('datenschutz')">Datenschutz</a>
+            </div>
+        </div>
+    </footer>
+
+    <div id="impressum" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('impressum')">&times;</span>
+            <h2>Impressum</h2>
+            <p><strong>Angaben gemäß § 5 TMG:</strong></p><br>
+            <p>[Dein Name / Kanalname]<br>
+            [Deine Straße und Hausnummer]<br>
+            [Deine PLZ und Ort]</p><br>
+            <p><strong>Kontakt:</strong><br>
+            E-Mail: [Deine Business-E-Mail-Adresse]</p><br>
+            <p><strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</strong><br>
+            [Dein Name]<br>
+            [Deine Adresse]</p>
+        </div>
+    </div>
+
+    <div id="datenschutz" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('datenschutz')">&times;</span>
+            <h2>Datenschutzerklärung</h2><br>
+            <p><strong>1. Datenschutz auf einen Blick</strong></p>
+            <p>Diese Webseite wird über GitHub Pages gehostet. Beim Besuch dieser Webseite werden von GitHub automatisch Server-Log-Dateien erhoben (IP-Adresse, Datum, Uhrzeit). Dies ist für den technischen Betrieb notwendig.</p><br>
+            <p><strong>2. YouTube-Embeds</strong></p>
+            <p>Wir betten auf dieser Seite Videos von YouTube ein. Betreiber ist die Google Ireland Limited. Wenn Sie eine Seite mit dem YouTube-Plugin besuchen, wird eine Verbindung zu den Servern von YouTube hergestellt.</p>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            once: true, // Animationen werden nur einmal beim Herunterscrollen abgespielt
+            mirror: false
+        });
+
+        // Modal Funktionen
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        // Schließen bei Klick außerhalb des Modals
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>
