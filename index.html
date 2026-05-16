@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WBTV - Building a World from Scratch</title>
+    <title>Worldbuilding TV — Building a World from Scratch</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,400&family=Montserrat:wght@200;400;500&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -15,12 +15,14 @@
 
     <style>
         :root {
-            --bg-color: #fcfbfa; /* Edles, helles Papier-Weiß */
-            --text-main: #1c1b1a; /* Sanftes Schwarz */
-            --text-muted: #6e6b64; /* Dezentes Grau für Struktur */
-            --accent: #8c2d19; /* Ein Hauch von Tinte/Wachs-Rot für subtile Akzente */
+            --bg-color: #f6f4f0; /* Richer, premium parchment paper tone */
+            --bg-card: #fbfbfa; /* Clean contrast for cards */
+            --text-main: #111111; /* Deep, heavy ink black */
+            --text-muted: #5a5750; /* Subtle charcoal grey */
+            --accent: #8c2d19; /* Wax seal red */
             --font-serif: 'Cormorant Garamond', serif;
-            --font-sans: 'Inter', sans-serif;
+            --font-sans: 'Montserrat', sans-serif;
+            --transition-smooth: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * {
@@ -29,56 +31,108 @@
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
             font-family: var(--font-sans);
             font-size: 16px;
-            line-height: 1.6;
+            line-height: 1.7;
             overflow-x: hidden;
-            /* Subtile Textur-Simulation des Papiers */
-            background-image: radial-gradient(rgba(0,0,0,0.03) 1px, transparent 0);
-            background-size: 24px 24px;
+            /* High-end parchment texture simulation */
+            background-image: 
+                radial-gradient(rgba(0,0,0,0.02) 1px, transparent 0),
+                linear-gradient(to right, rgba(0,0,0,0.005) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0,0,0,0.005) 1px, transparent 1px);
+            background-size: 32px 32px, 120px 120px, 120px 120px;
         }
 
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar { width: 6px; }
+        /* Smooth Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: #d0cabc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* Atmospheric Vignette (Dark borders like an old map) */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.04) 100%);
+            pointer-events: none;
+            z-index: 10;
+        }
 
         /* Navigation */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            padding: 30px 5%;
+            padding: 30px 6%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            background: rgba(252, 251, 250, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
+            background: rgba(246, 244, 240, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            transition: var(--transition-smooth);
+        }
+
+        nav.scrolled {
+            padding: 18px 6%;
+            background: rgba(246, 244, 240, 0.95);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
         }
 
         .logo {
             font-family: var(--font-serif);
-            font-size: 1.5rem;
-            font-weight: 600;
-            letter-spacing: 2px;
+            font-size: 1.8rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            color: var(--text-main);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            font-size: 0.8rem;
+            font-family: var(--font-sans);
+            letter-spacing: 1px;
+            border: 1px solid var(--text-main);
+            padding: 2px 6px;
+            border-radius: 2px;
         }
 
         .nav-links a {
             color: var(--text-main);
             text-decoration: none;
-            margin-left: 30px;
-            font-size: 0.9rem;
+            margin-left: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: color 0.3s;
+            letter-spacing: 2px;
+            position: relative;
+            padding: 5px 0;
         }
 
-        .nav-links a:hover { color: var(--accent); }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; width: 0; height: 1px;
+            background-color: var(--accent);
+            transition: var(--transition-smooth);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
         /* Hero Section */
         .hero {
@@ -89,295 +143,409 @@
             align-items: center;
             text-align: center;
             padding: 0 20px;
+            position: relative;
         }
 
         .hero h1 {
             font-family: var(--font-serif);
-            font-size: 3.5rem;
-            font-weight: 400;
-            letter-spacing: 4px;
-            margin-bottom: 20px;
+            font-size: 5rem;
+            font-weight: 300;
+            letter-spacing: 8px;
+            margin-bottom: 15px;
             text-transform: uppercase;
+            line-height: 1.1;
         }
 
         .hero p {
-            font-size: 1.1rem;
+            font-family: var(--font-serif);
+            font-size: 1.6rem;
+            font-style: italic;
             color: var(--text-muted);
-            letter-spacing: 2px;
-            text-transform: uppercase;
             max-width: 600px;
         }
 
-        /* Section Global */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            animation: bounce 2s infinite;
+        }
+
+        /* Sections General */
         section {
-            padding: 140px 10%;
+            padding: 160px 8%;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        h2 {
+        .section-title {
             font-family: var(--font-serif);
-            font-size: 2.5rem;
-            font-weight: 400;
-            margin-bottom: 40px;
-            letter-spacing: 2px;
+            font-size: 3rem;
+            font-weight: 300;
+            margin-bottom: 60px;
+            letter-spacing: 3px;
+            position: relative;
+            display: inline-block;
         }
 
-        /* About & YouTube Grid */
-        .grid-2 {
+        /* Feature Split Layout */
+        .grid-split {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 100px;
             align-items: center;
+        }
+
+        .about-text h3 {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 400;
+            margin-bottom: 25px;
         }
 
         .about-text p {
             color: var(--text-muted);
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             font-size: 1.1rem;
+            font-weight: 200;
         }
 
-        /* YouTube Embed Container */
+        /* Elegant Video Frame */
+        .video-wrapper {
+            position: relative;
+            background: var(--bg-card);
+            padding: 15px;
+            border: 1px solid rgba(0,0,0,0.06);
+            box-shadow: 0 30px 70px rgba(0,0,0,0.03);
+            transition: var(--transition-smooth);
+        }
+
+        .video-wrapper:hover {
+            transform: scale(1.02) rotate(0.5deg);
+            box-shadow: 0 40px 90px rgba(0,0,0,0.05);
+        }
+
         .video-container {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            padding-bottom: 56.25%;
             height: 0;
             overflow: hidden;
-            border: 1px solid rgba(0,0,0,0.1);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.02);
         }
 
         .video-container iframe {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
         }
 
-        /* Links / Social Section */
-        .social-grid {
+        /* Ecosystem / Links Layout */
+        .cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-            margin-top: 40px;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
         }
 
-        .social-card {
-            border: 1px solid rgba(0,0,0,0.08);
-            padding: 40px;
-            text-align: center;
+        .eco-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 50px;
             text-decoration: none;
             color: var(--text-main);
-            transition: all 0.4s ease;
-            background: #fff;
+            transition: var(--transition-smooth);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
         }
 
-        .social-card:hover {
-            border-color: var(--text-main);
-            transform: translateY(-5px);
+        .eco-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: var(--text-main);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .social-card i {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: var(--text-main);
+        .eco-card:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
         }
 
-        .social-card h3 {
+        .eco-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.02);
+            border-color: rgba(0,0,0,0.15);
+        }
+
+        .eco-card i {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            transition: var(--transition-smooth);
+        }
+
+        .eco-card:hover i {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .eco-card h3 {
             font-family: var(--font-serif);
-            font-size: 1.5rem;
+            font-size: 1.8rem;
             font-weight: 400;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
-        /* Footer & Legal */
+        .eco-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 200;
+        }
+
+        /* Footer */
         footer {
             background: #fff;
-            border-top: 1px solid rgba(0,0,0,0.05);
-            padding: 60px 10% 40px 10%;
-            font-size: 0.9rem;
+            border-top: 1px solid rgba(0,0,0,0.04);
+            padding: 80px 8% 50px 8%;
+            font-size: 0.85rem;
             color: var(--text-muted);
+            font-weight: 400;
         }
 
-        .footer-content {
+        .footer-wrap {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 20px;
+            gap: 30px;
         }
 
         .legal-links a {
             color: var(--text-muted);
             text-decoration: none;
-            margin-left: 20px;
+            margin-left: 30px;
             transition: color 0.3s;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.75rem;
         }
 
-        .legal-links a:hover { color: var(--text-main); }
+        .legal-links a:hover { color: var(--accent); }
 
-        /* Legal Modal (Impressum / Datenschutz) */
+        /* Smooth Overlays / Modals */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.4);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(17, 17, 17, 0.4);
             z-index: 2000;
             justify-content: center;
             align-items: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .modal.active {
+            opacity: 1;
         }
 
         .modal-content {
             background: var(--bg-color);
-            padding: 50px;
-            max-width: 700px;
+            padding: 60px;
+            max-width: 750px;
             max-height: 80vh;
             overflow-y: auto;
             position: relative;
             border: 1px solid rgba(0,0,0,0.1);
+            transform: scale(0.9) translateY(20px);
+            transition: var(--transition-smooth);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1) translateY(0);
         }
 
         .close-modal {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 1.5rem;
+            top: 25px;
+            right: 30px;
+            font-size: 1.8rem;
             cursor: pointer;
             color: var(--text-muted);
+            transition: color 0.3s;
+        }
+        .close-modal:hover { color: var(--text-main); }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
 
-        /* Responsive Anpassungen (Handy & TV) */
-        @media (max-width: 768px) {
-            nav { padding: 20px 5%; }
-            .nav-links { display: none; } /* Auf Handys minimal clean halten */
-            .hero h1 { font-size: 2.2rem; }
-            .grid-2 { grid-template-columns: 1fr; gap: 40px; }
-            section { padding: 80px 5%; }
-            .footer-content { flex-direction: column; text-align: center; }
+        /* Responsiveness */
+        @media (max-width: 992px) {
+            .grid-split { grid-template-columns: 1fr; gap: 60px; }
+            .cards-container { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 3.5rem; }
+            section { padding: 100px 6%; }
+        }
+
+        @media (max-width: 576px) {
+            nav .nav-links { display: none; }
+            .hero h1 { font-size: 2.8rem; }
+            .modal-content { padding: 30px; }
+            .footer-wrap { flex-direction: column; text-align: center; }
             .legal-links a { margin: 0 10px; }
         }
 
-        @media (min-width: 2000px) { /* Für 4K Fernseher */
-            html { font-size: 22px; }
-            section { max-width: 1800px; }
+        @media (min-width: 2200px) {
+            html { font-size: 20px; }
+            section { max-width: 1700px; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">WBTV</div>
+    <nav id="navbar">
+        <a href="#" class="logo">WB<span>TV</span></a>
         <div class="nav-links">
-            <a href="#about">Über Uns</a>
-            <a href="#videos">Videos</a>
-            <a href="#links">Links</a>
+            <a href="#about">The Project</a>
+            <a href="#ecosystem">Ecosystem</a>
         </div>
     </nav>
 
     <div class="hero">
-        <h1 data-aos="fade-up" data-aos-duration="1500">WBTV</h1>
-        <p data-aos="fade-up" data-aos-duration="1500" data-aos-delay="300">Building a World from Scratch</p>
+        <h1 data-aos="zoom-out-up" data-aos-duration="1800">Worldbuilding TV</h1>
+        <p data-aos="fade-up" data-aos-duration="1400" data-aos-delay="400">Building a World from Scratch</p>
+        <div class="scroll-indicator">Scroll to Explore</div>
     </div>
 
     <section id="about">
-        <div class="grid-2">
-            <div class="about-text" data-aos="fade-right" data-aos-duration="1000">
-                <h2>Das Projekt</h2>
-                <p>Willkommen auf unserem Kanal. Hier dreht sich alles um die Kunst des analogen Worldbuildings und des detailreichen Mapmakings.</p>
-                <p>Mit Tinte, Leder, Holz und Papier erwecken wir vergessene Kontinente, komplexe Ökosysteme und fesselnde Fantasy-Welten zum Leben. Schritt für Schritt, von der ersten Linie bis zur fertigen Legende.</p>
+        <div class="grid-split">
+            <div class="about-text" data-aos="fade-right" data-aos-duration="1200" data-aos-offset="200">
+                <h2 class="section-title">The Chronicle</h2>
+                <h3>Analog Craft meets Digital Fantasy</h3>
+                <p>Welcome to Worldbuilding TV. This channel is a sanctuary for slow-form creativity, dedicated entirely to the timeless art of hand-drawn mapmaking and lore creation.</p>
+                <p>Using ink, premium paper, and fountain pens, we breathe life into forgotten continents, detailed geography, and rich fantasy world settings. Line by line, from a blank page to an immersive legend.</p>
             </div>
-            <div class="about-image" data-aos="fade-left" data-aos-duration="1000">
+            <div class="video-wrapper" data-aos="fade-left" data-aos-duration="1200" data-aos-offset="200" data-aos-delay="200">
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/DEINE_VIDEO_ID" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="links">
-        <h2 data-aos="fade-up" style="text-align: center;">Erkunde das Ökosystem</h2>
-        <div class="social-grid">
-            <a href="https://youtube.com/@DEIN_KANAL" target="_blank" class="social-card" data-aos="fade-up" data-aos-delay="100">
-                <i class="fab fa-youtube"></i>
-                <h3>YouTube Channel</h3>
-                <p>Abonniere für wöchentliche Deep Dives und Tutorials.</p>
+    <section id="ecosystem">
+        <h2 class="section-title" data-aos="fade-up" data-aos-duration="1000">The Ecosystem</h2>
+        <div class="cards-container">
+            <a href="https://youtube.com/@worldbuildingtv" target="_blank" class="eco-card" data-aos="zoom-in-right" data-aos-duration="1000" data-aos-offset="150">
+                <div>
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube Channel</h3>
+                    <p>Watch full deep dives, ASMR map drawing sessions, and tactical worldbuilding tutorials.</p>
+                </div>
             </a>
-            <a href="#" target="_blank" class="social-card" data-aos="fade-up" data-aos-delay="200">
-                <i class="fab fa-discord"></i>
-                <h3>Discord Community</h3>
-                <p>Teile deine eigenen Karten und tausche dich aus.</p>
-            </a>
-            <a href="#" target="_blank" class="social-card" data-aos="fade-up" data-aos-delay="300">
-                <i class="fas fa-store"></i>
-                <h3>Worldbuilding Shop</h3>
-                <p>Exklusive Assets, Vorlagen und gedruckte Karten.</p>
+            <a href="#" target="_blank" class="eco-card" data-aos="zoom-in-left" data-aos-duration="1000" data-aos-offset="150" data-aos-delay="150">
+                <div>
+                    <i class="fab fa-discord"></i>
+                    <h3>Discord Cartographers</h3>
+                    <p>Join a mature community of creators, share your hand-drawn maps, and talk world lore.</p>
+                </div>
             </a>
         </div>
     </section>
 
     <footer>
-        <div class="footer-content">
-            <div>© <script>document.write(new Date().getFullYear())</script> WBTV. Alle Rechte vorbehalten.</div>
+        <div class="footer-wrap">
+            <div>© <script>document.write(new Date().getFullYear())</script> Worldbuilding TV. Crafted with passion.</div>
             <div class="legal-links">
-                <a href="#" onclick="openModal('impressum')">Impressum</a>
-                <a href="#" onclick="openModal('datenschutz')">Datenschutz</a>
+                <a href="#navbar" onclick="openModal('legal-notice')">Legal Notice</a>
+                <a href="#navbar" onclick="openModal('privacy-policy')">Privacy Policy</a>
             </div>
         </div>
     </footer>
 
-    <div id="impressum" class="modal">
+    <div id="legal-notice" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('impressum')">&times;</span>
-            <h2>Impressum</h2>
-            <p><strong>Angaben gemäß § 5 TMG:</strong></p><br>
-            <p>[Dein Name / Kanalname]<br>
-            [Deine Straße und Hausnummer]<br>
-            [Deine PLZ und Ort]</p><br>
-            <p><strong>Kontakt:</strong><br>
-            E-Mail: [Deine Business-E-Mail-Adresse]</p><br>
-            <p><strong>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:</strong><br>
-            [Dein Name]<br>
-            [Deine Adresse]</p>
+            <span class="close-modal" onclick="closeModal('legal-notice')">&times;</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin-bottom: 20px;">Legal Notice (Impressum)</h2>
+            <p><strong>Information according to § 5 TMG:</strong></p><br>
+            <p>[Your Full Name / Channel Owner]<br>
+            [Street Name and Number]<br>
+            [Postal Code, City, Country]</p><br>
+            <p><strong>Contact Information:</strong><br>
+            Email: [Your Business Email Address]</p><br>
+            <p><strong>Responsible for contents according to § 55 Abs. 2 RStV:</strong><br>
+            [Your Full Name]<br>
+            [Your Address]</p>
         </div>
     </div>
 
-    <div id="datenschutz" class="modal">
+    <div id="privacy-policy" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('datenschutz')">&times;</span>
-            <h2>Datenschutzerklärung</h2><br>
-            <p><strong>1. Datenschutz auf einen Blick</strong></p>
-            <p>Diese Webseite wird über GitHub Pages gehostet. Beim Besuch dieser Webseite werden von GitHub automatisch Server-Log-Dateien erhoben (IP-Adresse, Datum, Uhrzeit). Dies ist für den technischen Betrieb notwendig.</p><br>
-            <p><strong>2. YouTube-Embeds</strong></p>
-            <p>Wir betten auf dieser Seite Videos von YouTube ein. Betreiber ist die Google Ireland Limited. Wenn Sie eine Seite mit dem YouTube-Plugin besuchen, wird eine Verbindung zu den Servern von YouTube hergestellt.</p>
+            <span class="close-modal" onclick="closeModal('privacy-policy')">&times;</span>
+            <h2 style="font-family: var(--font-serif); font-size: 2.5rem; margin-bottom: 20px;">Privacy Policy</h2>
+            <p><strong>1. Privacy at a Glance</strong></p>
+            <p>This website is securely hosted via GitHub Pages. When visiting this page, GitHub automatically collects server log files (including IP address, date, and time of access) to ensure technical stability and security.</p><br>
+            <p><strong>2. YouTube Video Embeds</strong></p>
+            <p>We embed YouTube videos on this site. The operator is Google Ireland Limited. When you visit a page with an embedded YouTube video, a secure connection to YouTube's servers is established to render the video player.</p>
         </div>
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
+        // Init AOS with premium, non-repeating configuration
         AOS.init({
-            once: true, // Animationen werden nur einmal beim Herunterscrollen abgespielt
-            mirror: false
+            once: true,
+            mirror: false,
+            anchorPlacement: 'top-bottom'
         });
 
-        // Modal Funktionen
+        // Navbar scroll transformation effect
+        const navbar = document.getElementById('navbar');
+        window.onscroll = () => {
+            if (window.scrollY > 40) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        };
+
+        // Advanced Modal System with Smooth Fade Transitions
         function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+            setTimeout(() => {
+                modal.classList.add('active');
+            }, 10);
             document.body.style.overflow = 'hidden';
         }
+
         function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 500); // Syncs perfectly with CSS transition time
             document.body.style.overflow = 'auto';
         }
-        // Schließen bei Klick außerhalb des Modals
+
+        // Close on background click
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
-                document.body.style.overflow = 'auto';
+                const openModals = document.querySelectorAll('.modal.active');
+                openModals.forEach(modal => {
+                    closeModal(modal.id);
+                });
             }
         }
     </script>
